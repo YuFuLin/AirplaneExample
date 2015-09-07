@@ -5,10 +5,9 @@ import java.util.ArrayList;
 import Bee.Object.Object2D;
 import Bee.main.GV;
 
-// 子彈
+
 public class Bullet1 extends Object2D{
-	
-	// 子彈的大小
+
 	public static int size = 15;
 	public static int halfSize = size >> 1;
 	
@@ -18,12 +17,12 @@ public class Bullet1 extends Object2D{
 		isAlive = true;
 	}
 	
-	// 子彈移動
+
 	public boolean bulletMove()
 	{
 		move();
 		
-		// 是否超出螢幕
+
 		if (!GV.isInScreen(destRect))
 			return true;
 		else
