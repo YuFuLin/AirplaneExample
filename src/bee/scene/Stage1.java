@@ -30,84 +30,84 @@ public class Stage1 extends DrawableGameComponent {
 
 	private Canvas subCanvas;
 
-	// 顯示FPS文字
+	// Show the FPS
 	private Text fpsText;
 
-	// 自機圖片
+	// Player bitmap
 	private Bitmap f16Bitmap;
 
-	// 自機物件
+	// Player object
 	private ArrayList<Plane> myPlane;
 
-	// 民航機圖片
+	// Aircraft Bitmap
 	private Bitmap aircraftBitmap;
 
-	// 民航機物件
+	// Aircraft object
 	private ArrayList<Plane> aircraft;
 
-	// 子彈圖片
+	// Bullet Bitmap
 	private Bitmap bulletBitmap1;
 
-	// 一般背景圖片
+	// Background Bitmap
 	private Bitmap backGroundImage;
 
-	// 一般背景物件
+	// 2D Bitmap
 	private Object2D backGroundObj;
 
-	// 爆炸圖片
+	// Explode Bitmap
 	private Bitmap boomBitmap;
 
-	// 爆炸
+	// Explode
 	private ArrayList<Boom> boom = new ArrayList<Boom>();
 
-	// 子彈暫存用物件
+	// Bullet buffer
 	private Bullet1 bullet;
 
-	// 爆炸暫存
+	// Explode buffer
 	private Boom subBoom;
 
-	// 飛機暫存
+	// Aircraft buffer
 	private Plane plane;
 
-	// 迴圈變數
+	// loop counter
 	private int f, j, k;
 
-	// 發射特效圖片
+	// Shooe effect bitmap
 	private Bitmap shootEffectBitmap;
 
-	// 發射特效物件
+	// shoot
 	public ArrayList<ShootEffect> shootEffect = new ArrayList<ShootEffect>();
 
-	// 是否啟用黑色遮罩
+	// Blackmask bloolean
 	private boolean isBlackMask;
 	private Object2D blackMask;
 
-	// 是否啟用紅色遮罩
+	// Redmask bloolean
 	private RedMask redMask;
 
-	// 黑色遮罩開始啟用時間
+	// Black mask start time
 	private int startBlackMaskFrame;
 
-	// 從黑色遮罩到重新遊戲的時間
+	// restart delay time
 	private int restartDelayFrame = 150;
 
-	// 顯示GameOver文字
+	// GameOver text
 	private Text gameOverText;
 	
-	// 蜘蛛
+	// spider 
 	private Bitmap spiderBitmap;
 	private ArrayList<Plane> spiderObj;
 	
-	// 畫格總數
+	// frame time
 	private int frameTime;
 	
-	// 蜘蛛背景
+	// Spider background
 	private Bitmap spiderBackGroundBitmap;
 	
-	// 蜘蛛背景物件
+	// Spider background object
 	private Object2D spiderBackGroundObj;
 	
-	// 破關
+	// finish the game
 	private boolean breakOff;
 
 	public Stage1(Game1 game) {
@@ -117,7 +117,7 @@ public class Stage1 extends DrawableGameComponent {
 	@Override
 	protected void Initialize() {
 
-		// 預先算好三角函數
+		// Trigonometric function
 		for (int f = 0; f < 360; f++) {
 			GV.Cosine[f] = (float) Math.cos(f * Math.PI / 180);
 			GV.Sine[f] = (float) Math.sin(f * Math.PI / 180);
@@ -125,7 +125,7 @@ public class Stage1 extends DrawableGameComponent {
 
 		GV.screenRect = new Rect(0, 0, GV.scaleWidth, GV.scaleHeight);
 
-		// 歸零
+		// Counter to zero
 		game.totalFrames = 0;
 
 		super.Initialize();
@@ -134,10 +134,10 @@ public class Stage1 extends DrawableGameComponent {
 	@Override
 	protected void LoadContent() {
 
-		// 取得單一影格的寬高
+		// set width anf height for frame
 		int width, height;
 
-		// 民航機
+		// aircraft Bitmap
 		aircraftBitmap = (Bitmap) BitmapFactory.decodeResource(GV.res,
 				R.drawable.aircraft);
 
@@ -150,7 +150,7 @@ public class Stage1 extends DrawableGameComponent {
 		Aircraft.halfWidth = width >> 1;
 		Aircraft.halfHeight = height >> 1;
 
-		// 自機
+		// self plane
 		f16Bitmap = (Bitmap) BitmapFactory.decodeResource(GV.res,
 				R.drawable.f16);
 
@@ -161,31 +161,31 @@ public class Stage1 extends DrawableGameComponent {
 		myPlane.add(new F16(GV.halfWidth - (width >> 1), GV.scaleHeight, width,
 				height, 0, 0, width, height, 5, Color.WHITE, 270));
 
-		// 設定觸控位置在中下方
+		// set the touching area
 		GV.x = GV.halfWidth;
 		GV.y = GV.scaleHeight - height;
 
-		// 子彈
+		// bullet
 		bulletBitmap1 = BitmapFactory
 				.decodeResource(GV.res, R.drawable.bullet1);
 
-		// 背景
+		// background
 		backGroundImage = (Bitmap) BitmapFactory.decodeResource(GV.res,
 				R.drawable.water);
 		
-		// 背景物件
+		// background object
 		backGroundObj = new Object2D(0, 0, GV.scaleWidth / backGroundImage.getWidth(), GV.scaleHeight / backGroundImage.getHeight(), 0, 0, 0, 0, 0, 0, 0);
 		backGroundObj.isAlive = true;
 
-		// 文字
+		// text
 		fpsText = new Text(GV.halfWidth, 20, 12, "FPS", Color.YELLOW);
 
-		// 爆炸
+		// explode
 		boomBitmap = BitmapFactory.decodeResource(GV.res, R.drawable.boom2);
 		Boom.size = boomBitmap.getWidth() / Boom.col;
 		Boom.halfSize = Boom.size >> 1;
 
-		// 發射的特效
+		// shooting effect
 		shootEffectBitmap = BitmapFactory.decodeResource(GV.res,
 				R.drawable.effect);
 
@@ -194,16 +194,16 @@ public class Stage1 extends DrawableGameComponent {
 		ShootEffect.halfWidth = ShootEffect.width >> 1;
 		ShootEffect.halfHeight = ShootEffect.height >> 1;
 
-		// 紅色Mask
+		// Red Mask
 		redMask = new RedMask(Color.RED, 0);
 
-		// 黑色Mask
+		// Black Mask
 		blackMask = new Object2D(0, 0, GV.scaleWidth, GV.scaleHeight,
 				Color.BLACK, 128);
 		
 		gameOverText = new Text(20, GV.halfHeight-18, 36, "Game Over", Color.WHITE);
 		
-		// 蜘蛛
+		// Spider
 		spiderBitmap = BitmapFactory.decodeResource(GV.res, R.drawable.spider);
 		
 		Spider.width = spiderBitmap.getWidth();
@@ -211,10 +211,10 @@ public class Stage1 extends DrawableGameComponent {
 		
 		spiderObj = new ArrayList<Plane>();
 		
-		// 蜘蛛背景
+		// Spider background
 		spiderBackGroundBitmap = BitmapFactory.decodeResource(GV.res, R.drawable.spider_scene);
 		
-		// 蜘蛛背景物件
+		// Spider background object
 		spiderBackGroundObj = new Object2D(0,-GV.scaleHeight,GV.scaleWidth,GV.scaleHeight,0, 0, spiderBackGroundBitmap.getWidth(), spiderBackGroundBitmap.getHeight(),0,Color.WHITE,0);
 
 		super.LoadContent();
@@ -231,20 +231,20 @@ public class Stage1 extends DrawableGameComponent {
 
 		frameTime = (int)game.totalFrames;
 		
-		// 在遊戲中初始化飛機(對映到下方的Action)
+		// Init the plane
 		switch ((int) game.totalFrames) {
-		case 150: // 5秒
+		case 150: // 5 second
 			aircraft.add(new Aircraft(GV.halfWidth - Aircraft.halfWidth,
 					-Aircraft.height, Aircraft.width, Aircraft.height, 0, 0,
 					Aircraft.width, Aircraft.height, 5, Color.WHITE, 90,
 					State.step2));
 			break;
-		case 240: // 8秒
+		case 240: // 8 second
 			aircraft.add(new Aircraft(20, -Aircraft.height, Aircraft.width,
 					Aircraft.height, 0, 0, Aircraft.width, Aircraft.height, 5,
 					Color.WHITE, 90, State.step2));
 			break;
-		case 330: // 11秒
+		case 330: // 11 second
 			aircraft.add(new Aircraft(GV.scaleWidth - Aircraft.width - 20,
 					-Aircraft.height, Aircraft.width, Aircraft.height, 0, 0,
 					Aircraft.width, Aircraft.height, 5, Color.WHITE, 90,
@@ -265,7 +265,7 @@ public class Stage1 extends DrawableGameComponent {
 					State.step2));
 
 			break;
-		case 450: // 15秒 左邊連續出現
+		case 450: // 15 second
 			for (f = 0; f < 5; f++) {
 				aircraft.add(new Aircraft(20, (-Aircraft.halfHeight - 20)
 						* (f + 1), Aircraft.width, Aircraft.height, 0, 0,
@@ -274,7 +274,7 @@ public class Stage1 extends DrawableGameComponent {
 			}
 
 			break;
-		case 540: // 18秒 中間連續出現
+		case 540: // 18 second
 			for (f = 0; f < 5; f++) {
 				aircraft.add(new Aircraft(GV.halfWidth - Aircraft.halfWidth,
 						(-Aircraft.halfHeight - 20) * (f + 1), Aircraft.width,
@@ -283,7 +283,7 @@ public class Stage1 extends DrawableGameComponent {
 			}
 
 			break;
-		case 630: // 21秒 右邊連續出現
+		case 630: // 21 second
 			for (f = 0; f < 5; f++) {
 				aircraft.add(new Aircraft(GV.scaleWidth - Aircraft.width - 20,
 						(-Aircraft.halfHeight - 20) * (f + 1), Aircraft.width,
@@ -293,7 +293,7 @@ public class Stage1 extends DrawableGameComponent {
 
 			break;
 
-		case 750: // 25秒 左跟右連續出現
+		case 750: // 25 second
 			for (f = 0; f < 5; f++) {
 				aircraft.add(new Aircraft(20, (-Aircraft.halfHeight - 20)
 						* (f + 1), Aircraft.width, Aircraft.height, 0, 0,
@@ -309,7 +309,7 @@ public class Stage1 extends DrawableGameComponent {
 			}
 
 			break;
-		case 930: // 31秒
+		case 930: // 31 second
 			for (f = 0; f < 5; f++) {
 				aircraft.add(new Aircraft(GV.halfWidth - Aircraft.halfWidth,
 						(-Aircraft.halfHeight - 20) * (f + 1), Aircraft.width,
@@ -470,7 +470,7 @@ public class Stage1 extends DrawableGameComponent {
 			break;
 		case 1950: // 65
 			
-			// 蜘蛛背景音樂
+			// Spider background music
 			GV.music.player.release();
 			GV.music = new Music(game.bee, R.raw.spidermusic, 1);
 			GV.music.Play();
@@ -480,125 +480,125 @@ public class Stage1 extends DrawableGameComponent {
 			break;
 		}
 		
-		// 蜘蛛
+		// Spider
 		for (f = spiderObj.size() - 1; f >= 0; f--)
 		{
 			plane = spiderObj.get(f);
 			
-			// 子彈移動
+			// bullet moving
 			plane.AllBulletMove();
 			
 			if (plane.isAlive)
 			{
-				// 被大絕打到
+				// Hit by bomb
 				if (F16.isTouchBoom)
 				{
-					// 損血
+					// Hitpoint reduce
 					plane.blood -= F16.bigBoomPower;
 					
-					// 直接進行碰撞
+					// Plane Collision
 					plane.Collisioned(frameTime, boom);
 				}
 				
-				// 蜘蛛行動
+				// Spider moving
 				plane.Action(frameTime, myPlane.get(0), shootEffect);
 			}
 			else
 			{
-				// 破關
+		
 				breakOff = true;
 				
-				// 蜘蛛炮管
+		
 				for (j = plane.barrel.size() - 1; j >= 0; j--) 
 				{
-					// 子彈數量
+			
 					if (plane.barrel.get(j).bullet.size() != 0)
 						break;
 				}
 
-				// 所有子彈消失後移除蜘蛛
+		
 				if (j == -1)
 					spiderObj.remove(f);
 			}
 			
-			// 檢查子彈與F16碰撞
+		
 			plane.CheckBulletCollision(frameTime, myPlane, boom);
 		}
 		
-		// 檢查蜘蛛與自機碰撞
+	
 		Plane.CheckPlaneCollision((int) game.totalFrames, spiderObj, myPlane,boom);
 		
-		// 檢查民航機與自機碰撞
+
 		Plane.CheckPlaneCollision((int) game.totalFrames, aircraft, myPlane, boom);
 
-		// aircraft民航機行動
+
 		for (f = aircraft.size() - 1; f >= 0; f--) {
 			plane = aircraft.get(f);
 			
-			// 被大絕招打到
+	
 			if (F16.isTouchBoom)
 			{
-				// 損血
+		
 				plane.blood -= F16.bigBoomPower;
 				
-				// 直接進行碰撞
+	
 				plane.Collisioned(frameTime, boom);
 			}
 
-			// 子彈移動
+	
 			plane.AllBulletMove();
 
 			if (plane.isAlive)
 				plane.Action((int) game.totalFrames, myPlane.get(0), shootEffect);
 			else 
 			{
-				// 民航機炮管
+		
 				for (j = plane.barrel.size() - 1; j >= 0; j--) 
 				{
-					// 子彈數量
+			
 					if (plane.barrel.get(j).bullet.size() != 0)
 						break;
 				}
 
-				// 所有子彈消失後移除民航機
+				
 				if (j == -1)
 					aircraft.remove(f);
 			}
 		}
 
-		// 自機
+		// self plane
 		for (f = myPlane.size() - 1; f >= 0; f--) {
 			plane = myPlane.get(f);
 
-			// 子彈移動
+			// Bullet moving
 			plane.AllBulletMove();
 
-			// 自機行動
+			// Self moving
 			if (plane.isAlive)
 				plane.Action((int) game.totalFrames, shootEffect);
 
-			// 檢查自機子彈與民航機碰撞
+			// Collision checking with aircraft
 			plane.CheckBulletCollision((int) game.totalFrames, aircraft, boom);
 			
-			// 檢查自機子彈與蜘蛛碰撞
+			// Collision checking with bullet
 			plane.CheckBulletCollision(frameTime, spiderObj, boom);
 		}
 
-		// 檢查民航機子彈與自機的碰撞
+		// Collision checking
 		for (f = aircraft.size() - 1; f >= 0; f--) {
 			aircraft.get(f).CheckBulletCollision((int) game.totalFrames,
 					myPlane, boom);
 		}
 
-		// 大絕招
+		// Bome skill
 		if (F16.isTouchBoom) {
 			
-			// 新增爆炸
+			// Add explode
 			boom.add(new Boom(0, 0, GV.scaleWidth, GV.scaleHeight));
 			F16.isTouchBoom = false;
 		}
 
-		// 爆炸動畫
+		// Explode animation
 		for (f = boom.size() - 1; f >= 0; f--) {
 			subBoom = boom.get(f);
 
@@ -608,35 +608,35 @@ public class Stage1 extends DrawableGameComponent {
 				boom.remove(f);
 		}
 
-		// 發射特效
+		// Shoot Effect
 		for (f = shootEffect.size() - 1; f >= 0; f--) {
 			if (shootEffect.get(f).Animation()) {
 				shootEffect.remove(f);
 			}
 		}
 		
-		// 紅色遮罩淡入淡出
+		// Redmask fade in and out
 		if (redMask.isAlive)
 		{
 			redMask.Action(frameTime);
 			
-			// 設為切換背景
+			// Switch the background
 			spiderBackGroundObj.isAlive = true;
 		}
 		
-		// 一般背景捲動
+
 		if (backGroundObj.isAlive)
 		{
 			backGroundObj.addY(1);
 			
-			// 不斷循環
+			// Loop
 			backGroundObj.setY(backGroundObj.getY() % backGroundImage.getHeight());
 		}
 		
-		// 如果是一般背景狀態
+
 		if (spiderBackGroundObj.isAlive)
 		{
-			// 蜘蛛背景捲動
+			// Spider background
 			if (spiderBackGroundObj.getY() < 0)
 			{
 				spiderBackGroundObj.addY(1);
@@ -645,11 +645,11 @@ public class Stage1 extends DrawableGameComponent {
 				backGroundObj.isAlive = false;
 		}
 
-		// 更新fps顯示
+		// Refresf FPS
 		fpsText.message = (int) game.actualFPS + " FPS (" + (int) game.fps
 				+ ") " + (int) game.totalFrames;
 		
-		// 重新初始化
+		// Reinit
 		if (myPlane.get(0).life == 0 || breakOff) {
 			if (!isBlackMask)
 			{
@@ -658,7 +658,7 @@ public class Stage1 extends DrawableGameComponent {
 				startBlackMaskFrame = frameTime;
 			}
 			
-			// 重新遊戲
+			// Game reset
 			if (frameTime - startBlackMaskFrame > restartDelayFrame)
 			{
 				GV.music.Stop();
@@ -666,8 +666,6 @@ public class Stage1 extends DrawableGameComponent {
 			}
 		}
 		
-		// 10ms後震動100ms
-		// vibrator.vibrate(new long[]{10,100},-1);
 
 		super.Update();
 	}
@@ -675,10 +673,10 @@ public class Stage1 extends DrawableGameComponent {
 	@Override
 	protected void Draw() {
 
-		// 取得canvas
+		// get canvas
 		subCanvas = game.canvas;
 
-		// 一般背景
+		// Background
 		if (backGroundObj.isAlive)
 		{
 			for (f = 0; f <= backGroundObj.destWidth; f++) 
@@ -693,13 +691,13 @@ public class Stage1 extends DrawableGameComponent {
 			}
 		}
 		
-		// 蜘蛛背景
+		// Spider Background
 		if (spiderBackGroundObj.isAlive)
 		{
 			subCanvas.drawBitmap(spiderBackGroundBitmap, spiderBackGroundObj.srcRect,spiderBackGroundObj.destRect,null);
 		}
 		
-		// 蜘蛛
+		// Spider
 		for (f = spiderObj.size() - 1; f >= 0; f--)
 		{
 			plane = spiderObj.get(f);
@@ -716,7 +714,7 @@ public class Stage1 extends DrawableGameComponent {
 				subCanvas.drawRect(((Spider)plane).bloodObj.destRect,((Spider)plane).bloodObj.paint);
 			}
 			
-			// 子彈
+			// Bullet
 			for (j = plane.barrel.size() - 1; j >= 0; j--)
 			{
 				for (k = plane.barrel.get(j).bullet.size() - 1; k >= 0 ;k--)
@@ -727,7 +725,7 @@ public class Stage1 extends DrawableGameComponent {
 			}
 		}
 
-		// 民航機
+		// Aircraft
 		for (f = aircraft.size() - 1; f >= 0; f--) {
 			plane = aircraft.get(f);
 
@@ -743,7 +741,7 @@ public class Stage1 extends DrawableGameComponent {
 				subCanvas.restore();
 			}
 
-			// 民航機子彈
+			// Aircraft bullet
 			for (j = plane.barrel.size() - 1; j >= 0; j--) {
 				for (k = plane.barrel.get(j).bullet.size() - 1; k >= 0; k--) {
 					bullet = plane.barrel.get(j).bullet.get(k);
@@ -753,7 +751,7 @@ public class Stage1 extends DrawableGameComponent {
 			}
 		}
 
-		// 自機
+		// Self plane
 		for (f = myPlane.size() - 1; f >= 0; f--) {
 			plane = myPlane.get(f);
 
@@ -761,9 +759,9 @@ public class Stage1 extends DrawableGameComponent {
 				subCanvas.drawBitmap(f16Bitmap, plane.srcRect, plane.destRect,
 						plane.paint);
 
-			// 自機炮管
+			// Barrel
 			for (j = plane.barrel.size() - 1; j >= 0; j--) {
-				// 自機子彈
+				// Bullet
 				for (k = plane.barrel.get(j).bullet.size() - 1; k >= 0; k--) {
 					bullet = plane.barrel.get(j).bullet.get(k);
 					subCanvas.drawBitmap(bulletBitmap1, bullet.getX(), bullet
@@ -772,32 +770,32 @@ public class Stage1 extends DrawableGameComponent {
 			}
 		}
 
-		// 爆炸
+		// Boom effect
 		for (f = 0; f < boom.size(); f++) {
 			subBoom = boom.get(f);
 			subCanvas.drawBitmap(boomBitmap, subBoom.srcRect, subBoom.destRect,
 					subBoom.paint);
 		}
 
-		// 發射特效
+		// Shooting Effect
 		for (f = shootEffect.size() - 1; f >= 0; f--) {
 			subCanvas.drawBitmap(shootEffectBitmap, shootEffect.get(f).srcRect,
 					shootEffect.get(f).destRect, shootEffect.get(f).paint);
 		}
 
-		// FPS文字
+		// FPS text
 		subCanvas.drawText(fpsText.message, fpsText.x, fpsText.y, fpsText.paint);
 		
-		// 紅色遮罩
+		// Red Mask
 		if (redMask.isAlive)
 		{
 			subCanvas.drawRect(redMask.destRect, redMask.paint);
 			
-			// 警告訊息
+			// Warning message
 			subCanvas.drawText(redMask.warningText.message, redMask.warningText.x, redMask.warningText.y, redMask.warningText.paint);
 		}
 
-		// 黑色遮罩
+		// Black mask
 		if (isBlackMask)
 			subCanvas.drawRect(blackMask.destRect, blackMask.paint);
 		
