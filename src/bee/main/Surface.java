@@ -1,7 +1,3 @@
-/*copyright(c) 2010/11/18 by NQU CSIE 劉柏賢 
- * 
- * 
- */
 
 package Bee.main;
 
@@ -23,10 +19,10 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback
 	}
 	
 	public void surfaceCreated(SurfaceHolder arg0) {
-		// 如果影片不是播放的狀態才執行遊戲執行緒
+		// If the video stopped run the game
 		if (!GV.videoPlayer.isRuningVideo)
 		{
-			// 以新的執行緒執行
+			// Run the game
 			bee.game.Run();
 			
 			switch(GameStateClass.currentState)
@@ -36,7 +32,7 @@ public class Surface extends SurfaceView implements SurfaceHolder.Callback
 					
 					break;
 				case Stage1:
-					// 播放音樂
+					// Play the music
 					GV.music.Play();
 					
 					break;
