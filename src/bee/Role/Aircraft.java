@@ -9,50 +9,50 @@ import Bee.main.GV;
 
 public class Aircraft extends Plane{
 	
-	// 狀態種類
+	// State kind
 	private State kind = State.step1;
 	
-	// 長
+	// Width
 	public static int width = 0;
 	
-	// 寬
+	// Height
 	public static int height = 0;
 	
 	public static int halfWidth = 0;
 	public static int halfHeight = 0;
 	
-	// 瞄準目標時間
+	// Target aim frame
 	private int startTargetFrame = 0;
 	
-	// 切換到射擊狀態的時間
+	// Switch Shoot Delay time
 	private static final int switchShootDelayFrame = 60;
 	
-	// 開始結束狀態時間
+	// Start End Frame
 	private int startEndFrame = 0;
 	
-	// 切換到結束狀態的時間
+	// Switch End Delay frame
 	private static final int switchEndDelayFrame = 300; 
 	
-	// 用來判斷左右
+	// Check left and right
 	private int tempX;
 	
-	// 向下移動到目的位置
+	// move down
 	private int movDestY;
 	
-	// 暫存角度
+	// temp angle
 	private int tempTheta;
 	
 	public Aircraft(int destX,int destY,int destWidth,int destHeight,int srcX,int srcY,int srcWidth,int srcHeight,int speed,int color,int theta,State kind) {
 		super( destX, destY, destWidth, destHeight, srcX, srcY, srcWidth, srcHeight,speed, color,theta);
 		
-		// Action的狀態圈
+		// Action cycle
 		this.kind = kind;
 		
 		switch(kind)
 		{
 			case step1:
 				
-				// 新增炮管
+				// add barrel
 				barrel.add(new Barrel(halfHeight, theta, theta, 5, 60));
 				
 				blood = 4;
@@ -72,13 +72,13 @@ public class Aircraft extends Plane{
 				break;
 		}
 		
-		// 設為已存活
+		// set alive
 		isAlive = true;
 		
-		// 動畫正面
+
 		index = 10;
 		
-		// 向下移動到目的位置
+
 		movDestY = destY + GV.scaleHeight;
 	}
 	
@@ -93,8 +93,7 @@ public class Aircraft extends Plane{
 				switch(state)
 				{
 					case step1:
-						
-						// 向下移動
+			
 						if (moveDown(movDestY))
 						{
 							state = State.step2;
@@ -106,10 +105,8 @@ public class Aircraft extends Plane{
 						break;
 					case step2:
 						
-						// 瞄準目標
 						rotationPlane(getTargetTheta(myPlane.destRect,this.destRect));
 						
-						// 切換下一個狀態
 						if (frameTime - startTargetFrame > switchShootDelayFrame)
 						{
 							state = State.step3;
@@ -118,14 +115,11 @@ public class Aircraft extends Plane{
 						break;
 					case step3:
 						
-						// 射擊
 						Shoot(frameTime,shootEffect);
-						
-						// 切換成瞄準狀態
+
 						startTargetFrame = frameTime;
 						state = State.step2;
-						
-						// 切換成結束狀態
+
 						if (frameTime - startEndFrame > switchEndDelayFrame)
 						{
 							state = State.step4;
@@ -144,7 +138,7 @@ public class Aircraft extends Plane{
 				{
 					case step1:
 						
-						// 移動到螢幕四分之一的高度
+
 						if (moveDown(GV.halfHeight >> 1))
 						{
 							state = State.step2;
@@ -153,7 +147,7 @@ public class Aircraft extends Plane{
 						break;
 					case step2:
 						
-						// 向F16衝撞
+	
 						setTheta(getTargetTheta(myPlane.destRect,this.destRect));
 						move();
 						
@@ -227,7 +221,7 @@ public class Aircraft extends Plane{
 		else if (tempX < 0)
 			offset = -1;
 		
-		// 自機動畫
+
 		planeAnimation();
 		
 		super.Action(frameTime, myPlane,shootEffect);
