@@ -70,12 +70,12 @@ public class VideoPlayer
 		video.clearAnimation();
 		video.clearFocus();
 		
-		// 切換關卡
+		// Switch the stage
 		switch(GameStateClass.currentState)
 		{
 			case op:
 				
-				// 初始化畫布View
+				// Init the canvas view
 				GameStateClass.currentState = GameState.Menu;
 				GV.surface = new Surface(bee);
 				
@@ -98,7 +98,7 @@ public class VideoPlayer
 			super(context);
 		}
 		
-		// 將影片設定為全螢幕
+		//Set the video full screen
 		@Override
 		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 			setMeasuredDimension(GV.scaleWidth, GV.scaleHeight);
