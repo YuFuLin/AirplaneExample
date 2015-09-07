@@ -13,18 +13,18 @@ public class Menu extends DrawableGameComponent{
 	private Game1 game;
 	private Canvas subCanvas;
 	
-	// µe®æ®É¶¡
+	// Init the frame
 	private int frameTime;
 	
-	// ­I´º
+	// Init the background
 	private Bitmap menuBitmap;
 	private Object2D menuObj;
 	
-	// "Touch"¤å¦r
+	// Show the txet"Touch"
 	private Text menuText;
 	private Text menuShadow;
 	
-	// ¼ÐÃD¤å¦r
+	// Mune Title
 	private Text menuTitleText;
 	private Text menuTitleShadow;
 	
@@ -35,21 +35,21 @@ public class Menu extends DrawableGameComponent{
 	@Override
 	protected void Initialize() {
 		
-		// ¼ÐÃD¤å¦r
-		menuTitleText = new Text(65, 50, 36, "¤p­¸¾÷", Color.YELLOW);
+		// Menu Title text
+		menuTitleText = new Text(65, 50, 36, "å°é£›æ©Ÿ", Color.YELLOW);
 		
 		menuTitleShadow = new Text(menuTitleText.x + 10, menuTitleText.y - 5, menuTitleText.size, menuTitleText.message, Color.BLACK);
 		
-		// "Touch"¤å¦r
+		// Text "TOUCH"
 		menuText = new Text(50, GV.scaleHeight - 70, 12, "Touch screen to start", Color.YELLOW);
 		menuText.delayFrame = 20;
 		
 		menuShadow = new Text(menuText.x + 10, menuText.y - 5, menuText.size, menuText.message, Color.BLACK);
 		
-		// ¸ü¤J­I´º
+		// Load background
 		menuBitmap = BitmapFactory.decodeResource(GV.res, Bee.main.R.drawable.menu);
 		
-		// ªì©l¤Æ­I´ºª«¥ó
+		// Init the background
 		menuObj = new Object2D(0, 0, GV.scaleWidth, GV.scaleHeight, 0, 0, menuBitmap.getWidth(), menuBitmap.getHeight(), 0, Color.WHITE, 0);
 		menuObj.paint.setAlpha(170);
 		
@@ -65,10 +65,10 @@ public class Menu extends DrawableGameComponent{
 	@Override
 	protected void Update() {
 		
-		// ¨ú±o¥Ø«eªºµe®æ®É¶¡
+		// Get the frame time
 		frameTime = (int)game.totalFrames;
 		
-		// °{Ät"Touch"¤å¦r
+		// The text "Touch" flashing
 		if (frameTime - menuText.startFrame > menuText.delayFrame)
 		{
 			menuText.startFrame = frameTime;
@@ -84,22 +84,22 @@ public class Menu extends DrawableGameComponent{
 		
 		subCanvas = game.canvas;
 		
-		// µe¥X­I´º
+		// Draw the bitmap
 		subCanvas.drawBitmap(menuBitmap, menuObj.srcRect, menuObj.destRect, menuObj.paint);
 		
-		// µe¥X¼ÐÃD³±¼v
+		// Draw title shadow
 		subCanvas.drawText(menuTitleShadow.message, menuTitleShadow.x, menuTitleShadow.y, menuTitleShadow.paint);
 		
-		// µe¥X¼ÐÃD
+		// Draw text
 		subCanvas.drawText(menuTitleText.message, menuTitleText.x, menuTitleText.y, menuTitleText.paint);
 		
-		// °{Ät
+		// Flash
 		if (menuText.isVisible)
 		{
-			// µe¥X"Touch"³±¼v
+			// Draw Shadow
 			subCanvas.drawText(menuShadow.message, menuShadow.x, menuShadow.y, menuShadow.paint);
 			
-			// µe¥X"Touch"¤å¦r
+			// Draw text
 			subCanvas.drawText(menuText.message, menuText.x, menuText.y, menuText.paint);
 		}
 		
