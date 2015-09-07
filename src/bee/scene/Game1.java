@@ -23,7 +23,7 @@ public class Game1 extends Game {
 	@Override
 	protected void Initialize() {
 
-		// 設定靜態變數的初值
+		// Set the init value
 		F16.bigBoom = 1;
 		F16.startBigBoomFrame = 0;
 
@@ -33,13 +33,13 @@ public class Game1 extends Game {
 	@Override
 	protected void LoadContent() {
 		
-		// 遊戲音效
+		// Sound effect
 		GV.snd = new SoundPool(10, AudioManager.STREAM_MUSIC, 0);
 		
-		// 爆炸
+		// Explode
 		GV.soundIDBoom = GV.snd.load(bee, R.raw.explosion, 0);
 		
-		// 警告
+		// Warning
 		GV.soundIDAlert = GV.snd.load(bee, R.raw.sysalert, 0);
 		
 		super.LoadContent();
@@ -67,11 +67,11 @@ public class Game1 extends Game {
 				break;
 			case Stage1:
 
-				// 新增第一關
+				// Add first stage
 				stage1 = new Stage1(this);
 				Components.add(stage1);
 
-				// 播放背景音樂
+				// Play BGM
 				if (!GV.music.player.isPlaying()) {
 					GV.music.player.release();
 					GV.music = new Music(bee, R.raw.stage1,2);
@@ -92,7 +92,7 @@ public class Game1 extends Game {
 
 		canvas = GV.surface.mHolder.lockCanvas(null);
 
-		// 清空
+		// Clean canvas
 		canvas.drawColor(Color.BLACK);
 
 		super.Draw();
