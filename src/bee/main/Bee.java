@@ -81,30 +81,30 @@ public class Bee extends Activity {
         sensor = sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 	}
 	
-	// 載入資源
+	// Loading
 	public void LoadContent() {
 		
-		// 遊戲狀態初始化
+		// Init the game state
 		GameStateClass.currentState = GameState.op;
 		GameStateClass.oldState = GameState.None;
 		
-		// 背景音樂
+		// BGM
 		GV.music = new Music(this, R.raw.stage1, 3);
 		
-		// 初始化遊戲
+		// Init the game
 		game = new Game1(this);
 		
-		// 初始化影片播放器
+		// Init the video player
 		GV.videoPlayer = new VideoPlayer(this);
 		
-		// 載入開頭動畫
+		// Load the movie
 		GV.videoPlayer.Load(R.raw.op);
 		
-		// 播放開頭動畫
+		// Play the movie
 		GV.videoPlayer.Play();
 	}
 	
-	// 釋放資源
+	// Release the resource of movie
 	public void UnloadContent()
 	{
 		GV.snd.release();
@@ -113,46 +113,46 @@ public class Bee extends Activity {
 		finish();
 	}
 	
-	// 回復程式
+	// Resume the program
 	@Override
 	protected void onResume() {
 		wakeLock.acquire();
 		
-		// 加速度計註冊
+		// Register the sensor
         sensorMgr.registerListener(lsn, sensor, SensorManager.SENSOR_DELAY_GAME);
 		
-        // 繼續播放影片
+        // Resume the video
 		if (GV.videoPlayer.isRuningVideo)
 			GV.videoPlayer.Resume();
         
 		super.onResume();
 		
-		// 會切到surfaceCreated
+		// Switch to the suface creator
 	}
 	
-	// 暫停程式
+	// Pause the game
 	@Override
 	protected void onPause() {
 		GV.vibrator.cancel();
 		wakeLock.release();
 		
-		// 加速度計解註冊
+		// Unregister the sensor
         sensorMgr.unregisterListener(lsn);
         
-        // 暫停影片播放
+        // Pause the video
 		if (GV.videoPlayer.isRuningVideo)
 			GV.videoPlayer.Pause();
 		
 		if (game != null)
 		{
-			// 暫停音樂播放
+			// Pause the music
 			if (GameStateClass.currentState != GameState.Menu)
 			{
 				if (GV.music != null)
 					GV.music.Pause();
 			}
 		
-			// 停止遊戲迴圈
+			// Stop the game
 			
 			game.Exit();
 		}
@@ -160,10 +160,10 @@ public class Bee extends Activity {
 		super.onPause();
 	}
 
-	// 觸控事件
+	// Touch panel event
 	public boolean onTouchEvent(MotionEvent event) 
 	{
-		// 按下
+		// Press
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			switch(GameStateClass.currentState)
@@ -173,13 +173,13 @@ public class Bee extends Activity {
 					
 					break;
 				case Menu:
-					// 如果正在播放影片則停止播放
+					// Stop the video player if video is playing
 					if (!GV.videoPlayer.isRuningVideo)
 					{
-						// 停止遊戲執行緒
+						// Stop the game thread
 						game.Exit();
 						
-						// 載入並播放F16起飛動畫
+						// Play the flying video
 						GV.videoPlayer.Load(R.raw.f16);
 						GV.videoPlayer.Play();
 					}else
@@ -190,7 +190,7 @@ public class Bee extends Activity {
 					break;
 				case Stage1:
 					
-					// 大絕招
+					// Bomb skill
 					if (F16.bigBoom > 0)
 					{
 						if ((int)game.totalFrames - F16.startBigBoomFrame > F16.bigBoomDelayFrame)
@@ -209,7 +209,7 @@ public class Bee extends Activity {
 		return super.onTouchEvent(event);
 	}
 	
-	// 鍵盤事件
+	// Key event
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
@@ -232,7 +232,7 @@ public class Bee extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	// 重力加速度感測器
+	// The sensor of gravity
 	private SensorEventListener lsn = new SensorEventListener() {  
         public void onSensorChanged(SensorEvent e) {
         	
