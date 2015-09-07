@@ -1,7 +1,4 @@
-/*copyright(c) 2010/11/18 by NQU CSIE 劉柏賢 
- * 
- * 
- */
+
 
 package Bee.main;
 
@@ -11,50 +8,50 @@ import android.graphics.Rect;
 import android.media.SoundPool;
 import android.os.Vibrator;
 
-// 所有類別共用變數
+// Public varaible
 public class GV {
 	public enum Sound{
 		boom,
 		alert,
 	}
 	
-	// 影片播放
+	// Play the video
 	public static VideoPlayer videoPlayer = null;
 
-	// 播放音樂
+	// Play the music
 	public static Music music = null;
 	
-	// 播放遊戲音效
+	// Play the sound effect
 	public static SoundPool snd = null;
 	
-	// 音效ID
+	// Sound ID
 	public static int soundIDBoom = 0;
 	
-	// 音效ID
+	// Sound ID
 	public static int soundIDAlert = 0;
 	
-	// 螢幕大小
+	// Screen size
 	public static int scaleWidth = 0;
 	public static int scaleHeight = 0;
 	public static int halfWidth = 0;
 	public static int halfHeight = 0;
 	
-	// 螢幕範圍
+	// Screen Range
 	public static Rect screenRect = null;
 	
-	// 震動
+	// Vibrator
 	public static Vibrator vibrator = null;
 	
-	// 資源
+	// Sound Resource
 	public static Resources res = null;
 	
-	// 自機的位置
+	// Self position
 	public static int x , y; 
 	
-	// 畫布
+	// Add surface
 	public static Surface surface = null;
 	
-	// 碰撞偵測
+	// Collision detection
 	public static boolean isCollision(Rect a, Rect b)
 	{
 		if (a.left < b.right)
@@ -66,26 +63,25 @@ public class GV {
 		return false;
 	}
 	
-	// 是否在螢幕內
+
 	public static boolean isInScreen(Rect obj)
 	{
 		return isCollision(obj, screenRect);
 	}
 	
-	// 三角函數
 	public static float[] Cosine = new float[360];
 	public static float[] Sine = new float[360];
 	
-    // 求角度
+    // get Angle
     public static int getTheta(double XDistance, double YDistance)
     {
-        // 不可除以0
+        // Prevent 0
         if (XDistance == 0) XDistance = 1;
 
-        // 角度
+        // Angle
         int theta = (int)(Math.atan(YDistance / XDistance) * 180 / Math.PI);
         
-        // 象限轉換
+        // Change the X axis and Y axis
         if (XDistance >= 0 && theta <= 0)
         	theta += 360;
         else if (XDistance <= 0)
@@ -94,7 +90,7 @@ public class GV {
         return theta;
     }
     
-    // 播放音效
+    // Play sound
     public static void playSound(Sound sound)
     {
     	switch(sound)
