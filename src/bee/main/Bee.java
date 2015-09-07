@@ -46,25 +46,25 @@ public class Bee extends Activity {
 		LoadContent();
 	}
 	
-	// ªì©l¤Æ
+	// Init
 	private void Initialize() {
 		GV.res = getResources();
 
-		// ¨ú±o¾_°Ê¨t²ÎªA°È
+		// Get the service of vibrator
 		GV.vibrator = (Vibrator) getApplication().getSystemService(
 				Service.VIBRATOR_SERVICE);
 
-		// µL¼ĞÃD¦C
+		// Setting no title
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-		// ¥ş¿Ã¹õ³]©w
+		// Full Screen
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		
-		// ¿Ã¹õ©T©w¦¨««ª½¤è¦V
+		// Fixed the screen
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-		// ¨ú±o¿Ã¹õ¤j¤p
+		// Get the size of the screen
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		GV.scaleWidth = dm.widthPixels;
@@ -72,39 +72,39 @@ public class Bee extends Activity {
 		GV.halfWidth = GV.scaleWidth >> 1;
 		GV.halfHeight = GV.scaleHeight >> 1;
 		
-		// ¨ú±o¿Ã¹õ«í«GªA°È
+		// Always wake the backlight
 		powerManager = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		wakeLock = powerManager.newWakeLock(PowerManager.SCREEN_BRIGHT_WAKE_LOCK, "BackLight");
 		
-		// ¨ú±o­«¤O¥[³t«×·P´ú¾¹ªA°È
+		// Get the sensor of gravity
 		sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 	}
 	
-	// ¸ü¤J¸ê·½
+	// è¼‰å…¥è³‡æº
 	public void LoadContent() {
 		
-		// ¹CÀ¸ª¬ºAªì©l¤Æ
+		// éŠæˆ²ç‹€æ…‹åˆå§‹åŒ–
 		GameStateClass.currentState = GameState.op;
 		GameStateClass.oldState = GameState.None;
 		
-		// ­I´º­µ¼Ö
+		// èƒŒæ™¯éŸ³æ¨‚
 		GV.music = new Music(this, R.raw.stage1, 3);
 		
-		// ªì©l¤Æ¹CÀ¸
+		// åˆå§‹åŒ–éŠæˆ²
 		game = new Game1(this);
 		
-		// ªì©l¤Æ¼v¤ù¼½©ñ¾¹
+		// åˆå§‹åŒ–å½±ç‰‡æ’­æ”¾å™¨
 		GV.videoPlayer = new VideoPlayer(this);
 		
-		// ¸ü¤J¶}ÀY°Êµe
+		// è¼‰å…¥é–‹é ­å‹•ç•«
 		GV.videoPlayer.Load(R.raw.op);
 		
-		// ¼½©ñ¶}ÀY°Êµe
+		// æ’­æ”¾é–‹é ­å‹•ç•«
 		GV.videoPlayer.Play();
 	}
 	
-	// ÄÀ©ñ¸ê·½
+	// é‡‹æ”¾è³‡æº
 	public void UnloadContent()
 	{
 		GV.snd.release();
@@ -113,46 +113,46 @@ public class Bee extends Activity {
 		finish();
 	}
 	
-	// ¦^´_µ{¦¡
+	// å›å¾©ç¨‹å¼
 	@Override
 	protected void onResume() {
 		wakeLock.acquire();
 		
-		// ¥[³t«×­pµù¥U
+		// åŠ é€Ÿåº¦è¨ˆè¨»å†Š
         sensorMgr.registerListener(lsn, sensor, SensorManager.SENSOR_DELAY_GAME);
 		
-        // Ä~Äò¼½©ñ¼v¤ù
+        // ç¹¼çºŒæ’­æ”¾å½±ç‰‡
 		if (GV.videoPlayer.isRuningVideo)
 			GV.videoPlayer.Resume();
         
 		super.onResume();
 		
-		// ·|¤Á¨ìsurfaceCreated
+		// æœƒåˆ‡åˆ°surfaceCreated
 	}
 	
-	// ¼È°±µ{¦¡
+	// æš«åœç¨‹å¼
 	@Override
 	protected void onPause() {
 		GV.vibrator.cancel();
 		wakeLock.release();
 		
-		// ¥[³t«×­p¸Ñµù¥U
+		// åŠ é€Ÿåº¦è¨ˆè§£è¨»å†Š
         sensorMgr.unregisterListener(lsn);
         
-        // ¼È°±¼v¤ù¼½©ñ
+        // æš«åœå½±ç‰‡æ’­æ”¾
 		if (GV.videoPlayer.isRuningVideo)
 			GV.videoPlayer.Pause();
 		
 		if (game != null)
 		{
-			// ¼È°±­µ¼Ö¼½©ñ
+			// æš«åœéŸ³æ¨‚æ’­æ”¾
 			if (GameStateClass.currentState != GameState.Menu)
 			{
 				if (GV.music != null)
 					GV.music.Pause();
 			}
 		
-			// °±¤î¹CÀ¸°j°é
+			// åœæ­¢éŠæˆ²è¿´åœˆ
 			
 			game.Exit();
 		}
@@ -160,10 +160,10 @@ public class Bee extends Activity {
 		super.onPause();
 	}
 
-	// Ä²±±¨Æ¥ó
+	// è§¸æ§äº‹ä»¶
 	public boolean onTouchEvent(MotionEvent event) 
 	{
-		// «ö¤U
+		// æŒ‰ä¸‹
 		if (event.getAction() == MotionEvent.ACTION_DOWN)
 		{
 			switch(GameStateClass.currentState)
@@ -173,13 +173,13 @@ public class Bee extends Activity {
 					
 					break;
 				case Menu:
-					// ¦pªG¥¿¦b¼½©ñ¼v¤ù«h°±¤î¼½©ñ
+					// å¦‚æœæ­£åœ¨æ’­æ”¾å½±ç‰‡å‰‡åœæ­¢æ’­æ”¾
 					if (!GV.videoPlayer.isRuningVideo)
 					{
-						// °±¤î¹CÀ¸°õ¦æºü
+						// åœæ­¢éŠæˆ²åŸ·è¡Œç·’
 						game.Exit();
 						
-						// ¸ü¤J¨Ã¼½©ñF16°_­¸°Êµe
+						// è¼‰å…¥ä¸¦æ’­æ”¾F16èµ·é£›å‹•ç•«
 						GV.videoPlayer.Load(R.raw.f16);
 						GV.videoPlayer.Play();
 					}else
@@ -190,7 +190,7 @@ public class Bee extends Activity {
 					break;
 				case Stage1:
 					
-					// ¤jµ´©Û
+					// å¤§çµ•æ‹›
 					if (F16.bigBoom > 0)
 					{
 						if ((int)game.totalFrames - F16.startBigBoomFrame > F16.bigBoomDelayFrame)
@@ -209,7 +209,7 @@ public class Bee extends Activity {
 		return super.onTouchEvent(event);
 	}
 	
-	// Áä½L¨Æ¥ó
+	// éµç›¤äº‹ä»¶
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		
@@ -232,7 +232,7 @@ public class Bee extends Activity {
 		return super.onKeyDown(keyCode, event);
 	}
 	
-	// ­«¤O¥[³t«×·P´ú¾¹
+	// é‡åŠ›åŠ é€Ÿåº¦æ„Ÿæ¸¬å™¨
 	private SensorEventListener lsn = new SensorEventListener() {  
         public void onSensorChanged(SensorEvent e) {
         	
